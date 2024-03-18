@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 
 from .models import Deck, FlashCard
@@ -13,5 +12,9 @@ class DeckViewSet(viewsets.ModelViewSet):
 class FlashCardViewSet(viewsets.ModelViewSet):
     serializer_class = FlashCardSerializer
 
-    def queryset(self, *args, **kwargs):
-        return FlashCard.objects.filter(deck=self.kwargs['deck_pk'])
+    def get_queryset(self, *args, **kwargs):
+        queryset = FlashCard.objects.all()
+        deck_id = self.kwargs.get('deck_id')
+        if deck_id is not None:
+            queryset = queryset.filter(deck_id=deck_id)
+        return queryset
