@@ -4,8 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from dictionary.consts import GRAMMATICAL_NUMBERS, PART_OF_SPEECHES, WORD_GENDERS
 
 
-# Create your models here.
-
 class Word(models.Model):
     spelling = models.CharField(
         max_length=256,
@@ -61,6 +59,10 @@ class Word(models.Model):
         blank=True, default=list
     )
 
+    class Meta:
+        verbose_name = _('word')
+        verbose_name_plural = _('words')
+
     def __str__(self):
         return self.spelling
 
@@ -103,6 +105,10 @@ class WordForm(models.Model):
         verbose_name=_('Word Gender'), null=True, blank=True
     )
 
+    class Meta:
+        verbose_name = _('word form')
+        verbose_name_plural = _('word forms')
+
     def __str__(self):
         return f"{self.word.spelling} - {self.form_name}: {self.form_value}"
 
@@ -123,6 +129,10 @@ class FormTranslation(models.Model):
         related_name='form_translations',
         related_query_name='form_translation'
     )
+
+    class Meta:
+        verbose_name = _('form translation')
+        verbose_name_plural = _('form translations')
 
     def __str__(self):
         return f"{self.text} [{self.language}]"
@@ -148,6 +158,10 @@ class Language(models.Model):
         blank=True, null=True
     )
 
+    class Meta:
+        verbose_name = _('language')
+        verbose_name_plural = _('languages')
+
     def __str__(self):
         return self.name
 
@@ -163,6 +177,10 @@ class PronunciationAudio(models.Model):
         related_name='pronunciations', related_query_name='pronunciation',
         on_delete=models.RESTRICT,
     )
+
+    class Meta:
+        verbose_name = _('pronunciation audio')
+        verbose_name_plural = _('pronunciation audios')
 
     def __str__(self):
         return self.description or "Pronunciation Audio"
