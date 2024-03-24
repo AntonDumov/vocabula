@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'dictionary.apps.DictionaryConfig',
     'flashcards.apps.FlashCardsConfig',
     'rest_framework',
+    'django_js_reverse',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
+    BASE_DIR / 'compiled'
 ]
 
 # Default primary key field type

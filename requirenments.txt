@@ -1,9 +1,14 @@
 asgiref==3.7.2
 Django==5.0.2
+django-annoying==0.10.6
 django-cors-headers==4.3.1
+django-js-reverse==0.10.2
 django-vite==3.0.3
 djangorestframework==3.15.0
+drf-nested-routers==0.93.5
+packaging==24.0
 pillow==10.2.0
 psycopg2-binary==2.9.9
+six==1.16.0
 sqlparse==0.4.4
 tqdm==4.66.2
