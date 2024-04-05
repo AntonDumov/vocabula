@@ -1,5 +1,10 @@
+from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin
+from rest_framework.mixins import (
+    ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin,
+    DestroyModelMixin,
+)
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from .models import Deck, FlashCard, FlashCardsProfile
@@ -16,7 +21,14 @@ class MyProfileView(RetrieveUpdateAPIView):
         )
 
 
-class DeckViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin, GenericViewSet):
+class DeckViewSet(
+    ListModelMixin,
+    RetrieveModelMixin,
+    CreateModelMixin,
+    UpdateModelMixin,
+    GenericViewSet,
+    DestroyModelMixin
+    ):
     serializer_class = DeckSerializer
 
     def get_queryset(self):
@@ -28,6 +40,23 @@ class DeckViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateMo
                 user=self.request.user
             )
         )
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not instance.profile.user == request.user:
+            return Response(
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        if not instance.profile.user == self.request.user:
+            return Response(
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        serializer.save()
 
 
 class FlashCardViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin, GenericViewSet):
